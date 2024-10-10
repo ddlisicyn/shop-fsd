@@ -1,0 +1,1 @@
+export { SearchModul } from "./ui/Search";

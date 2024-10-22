@@ -1,8 +1,11 @@
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
 import { ProductCard } from '../../../entities/product';
+import { getAllProducts } from '../api/getAllProducts';
 
 export function ProductsList() {
+  const { isLoading, data, isError, error } = getAllProducts();
+
   return (
     <Box sx={{ flexGrow: 1, p: 0 }}>
       <Grid

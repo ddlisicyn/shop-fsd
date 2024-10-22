@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { categories } from "../model/categories";
 import { styled, useTheme } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
@@ -11,6 +10,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import { Typography } from "@mui/material";
 
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -18,7 +18,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
 }));
 
 const drawerWidth = '100%';
@@ -46,6 +46,9 @@ export function DrawerModule({ open, handleDrawerClose }: DrawerModuleProps) {
             open={open}
         >
             <DrawerHeader>
+                <Typography variant="h5" align="left">
+                    Категории
+                </Typography>
                 <IconButton onClick={handleDrawerClose}>
                     {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                 </IconButton>

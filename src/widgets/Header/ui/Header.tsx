@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { SearchModul } from '../../../features/search';
 import { AddToCartButton } from '../../../features/cart/addToCartButton';
-import { DrawerModule } from '../../../features/drawer/ui/Drawer';
+import { DrawerModule } from '../../../features/drawer';
 
 export function Header() {
 	const [open, setOpen] = useState(false);

@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid2';
 export function ProductCard() {
     return (
         <Grid
-            minHeight={160}
+            minHeight={300}
             size={{
               xs: 6,
               sm: 6,

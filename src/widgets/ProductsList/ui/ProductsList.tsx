@@ -1,10 +1,14 @@
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
 import { ProductCard } from '../../../entities/product';
-import { getAllProducts } from '../api/getAllProducts';
+import { useGetAllProducts } from '../api/getAllProducts';
 
 export function ProductsList() {
-  const { isLoading, data, isError, error } = getAllProducts();
+  const { isLoading, data, isError, error } = useGetAllProducts();
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <Box sx={{ flexGrow: 1, p: 0 }}>
@@ -22,8 +26,8 @@ export function ProductsList() {
           },
         }}
       >
-        {[...Array(20)].map((_, index) => (
-            <ProductCard key={index} />
+        {data?.map((product, index) => (
+            <ProductCard key={index} product={product}/>
         ))}
       </Grid>
     </Box>

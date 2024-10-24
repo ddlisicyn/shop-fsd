@@ -1,14 +1,13 @@
 import Grid from '@mui/material/Grid2';
-import { Product } from '../model/product';
-import { Card, CardContent, CardMedia, Container, Box, 
+import { CardMedia, Container, Box, 
 	Typography, CardActions, Button, FormControl, 
 	InputLabel, Select, MenuItem, Link  } from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
+import { Product } from '../model/product';
 import { BASE_IMG_URL } from '../../../shared/config';
+import { CardStyleChanged, CardContentStyleChanged, NameTypography } from './styledComponents';
 
 export function ProductCard({ product }: { product: Product }) {
-    const { name, images, amwaySize, alias, code, price, retailPrice, lynxColorCode, lynxName, lynxPicture, variants } = product;
-    const image = `${BASE_IMG_URL}/${images?.[2]?.url}`;
-
     const handleClickDetail = () => {
 
     }
@@ -27,49 +26,45 @@ export function ProductCard({ product }: { product: Product }) {
               md: 4,
               lg: 3,
             }}
+            spacing={0.2}
         >
             <Container disableGutters>
-                <Card sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} >
-                    <CardContent sx={{ width: '100%' }}>
-                        <Link href={`/detail/${code}`} onClick={handleClickDetail}>
+                <CardStyleChanged sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} >
+                    <CardContentStyleChanged sx={{ width: '100%' }}>
+                        <Link href={`/detail/${product?.code}`} onClick={handleClickDetail}>
+                            {product ? (
                             <CardMedia
                                 component="img"
                                 width="100%"
                                 height="100%"
                                 loading="lazy"
-                                image={image}
-                                alt={name}
+                                image={`${BASE_IMG_URL}/${product.images?.[2]?.url}`}
+                                alt={product.name}
                                 sx={{ cursor: 'pointer' }}
                             />
+                            ) : (
+                                <Skeleton variant="rectangular" width={212} height={212}/>
+                            )}
                         </Link>
                         <Container  sx={{ textAlign: 'center' }}>
-                            <Link href={`/detail/${code}`} underline="none" color="black" onClick={handleClickDetail}>
-                                <Typography 
-                                    gutterBottom 
-                                    variant="subtitle1" 
-                                    component="div"
-                                    sx={{ 
-                                        wordWrap: 'normal',
-                                        cursor: 'pointer',
-                                        margin: 0,
-                                        height: '56px',
-                                        width: '100%',
-                                        '-webkit-line-clamp': 2,
-                                        display: '-webkit-box',
-                                        '-webkit-box-orient': 'vertical',
-                                        overflow: 'hidden',
-                                        textOverflow: 'ellipsis',
-                                        lineHeight: 'normal',
-                                    }}
-                                >
-                                {name}
-                                </Typography>
+                            <Link href={`/detail/${product?.code}`} underline="none" color="black" onClick={handleClickDetail}>
+                                    <NameTypography 
+                                        gutterBottom 
+                                        variant="subtitle1"
+                                    >
+                                        {product ? product.name : (
+                                            <>
+                                                <Skeleton />
+                                                <Skeleton />
+                                            </>
+                                        )}
+                                    </NameTypography>
                             </Link>
                             <Typography variant="subtitle1" mt={'5px'} fontWeight={'bold'}>
-                                {price.toLocaleString('ru-RU')},00 ₽
+                                {product ? `${product.price.toLocaleString('ru-RU')},00 ₽` : <Skeleton />}
                             </Typography>
                             <Typography variant="caption" sx={{ textDecoration: "line-through", color: "#e06666" }}>
-                                {retailPrice.toLocaleString('ru-RU')},00 ₽
+                                {product ? `${product.retailPrice.toLocaleString('ru-RU')},00 ₽` : <Skeleton />}
                             </Typography>
                         </Container>
                         {
@@ -96,11 +91,11 @@ export function ProductCard({ product }: { product: Product }) {
                         // </Box> :
                         // <Box sx={{ height: '45px' }}/>
                         }
-                    </CardContent>
+                    </CardContentStyleChanged>
                     <CardActions>
                         <Button size="medium" variant="contained" sx={{ marginBottom: '10px' }} onClick={handleClickAddProduct}>Добавить в корзину</Button>
                     </CardActions>
-                </Card>
+                </CardStyleChanged>
             </Container>
         </Grid>
     )

@@ -9,19 +9,19 @@ import { AddToCartButton } from '../../../features/cart/addToCartButton';
 import { DrawerModule } from '../../../features/drawer';
 
 export function Header() {
-	const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const handleDrawerOpen = () => setOpen(true);
-	const handleDrawerClose = () => setOpen(false);
+  const handleDrawerClose = () => setOpen(false);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position='static'>
         <Toolbar>
           <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
+            size='large'
+            edge='start'
+            color='inherit'
+            aria-label='open drawer'
             sx={{ mr: 2 }}
             onClick={handleDrawerOpen}
           >

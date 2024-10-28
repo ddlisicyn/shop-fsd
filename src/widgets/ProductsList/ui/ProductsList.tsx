@@ -18,9 +18,9 @@ export function ProductsList() {
   return (
     <Box sx={{ flexGrow: 1, p: 0 }}>
       <Grid container spacing={0.2}>
-        {(isLoading ? Array.from(new Array(20)) : data)?.map((product, index) => (
-            <ProductCard key={index} product={product}/>
-        ))}
+        {(isLoading ? Array.from(new Array(20)) : data)?.map(
+          (product, index) => <ProductCard key={index} product={product} />,
+        )}
       </Grid>
     </Box>
   );

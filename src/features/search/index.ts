@@ -1,1 +1,1 @@
-export { SearchModul } from "./ui/Search";
+export { SearchModul } from './ui/Search';

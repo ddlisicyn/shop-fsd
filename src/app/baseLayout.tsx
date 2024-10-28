@@ -1,9 +1,9 @@
-import { MainPage } from "../pages/main";
-import { Header } from "../widgets/Header";
+import { MainPage } from '../pages/main';
+import { Header } from '../widgets/Header';
 
 export const baseLayout = (
-    <div>
-        <Header />
-        <MainPage />
-    </div>
-)
+  <div>
+    <Header />
+    <MainPage />
+  </div>
+);

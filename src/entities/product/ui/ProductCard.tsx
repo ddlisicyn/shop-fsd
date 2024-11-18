@@ -26,7 +26,6 @@ export function ProductCard({ product }: { product: Product }) {
 
   const handleClickAddProduct = () => {};
 
-  console.log(product);
   return (
     <Grid
       minHeight={300}

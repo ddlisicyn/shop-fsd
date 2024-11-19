@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { categories } from '../model/categories';
 import { styled, useTheme } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
@@ -30,6 +31,7 @@ type DrawerModuleProps = {
 
 export function DrawerModule({ open, handleDrawerClose }: DrawerModuleProps) {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   return (
     <Drawer
@@ -67,7 +69,7 @@ export function DrawerModule({ open, handleDrawerClose }: DrawerModuleProps) {
                   top: 0,
                   behavior: 'smooth',
                 });
-                // navigate(`/${category.name}`);
+                navigate(`/?category=${category.name}`);
                 handleDrawerClose();
               }}
             >

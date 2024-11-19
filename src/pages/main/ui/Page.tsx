@@ -1,6 +1,6 @@
 import { useEffect, useState, ChangeEvent } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ProductsList } from '../../../widgets/ProductsList';
 import { getProducts } from '../api/getProducts';
 import { Product } from '../../../entities/product/model/product';
@@ -9,16 +9,22 @@ import './index.css';
 import { Spinner } from '../../../widgets/ProductsList/ui/Spinner';
 
 export function MainPage() {
+  const queryClient = useQueryClient();
   const [products, setProducts] = useState<Product[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const pageFromParams = searchParams.get('page');
   const page = pageFromParams !== null ? parseInt(pageFromParams) : 1;
+  const category = searchParams.get('category') || 'all';
 
   const { isLoading, data, isFetched, isError, error } = useQuery({
-    queryKey: ['products', page],
-    queryFn: () => getProducts(page),
+    queryKey: ['products', page, category],
+    queryFn: () => getProducts(page, category),
     placeholderData: keepPreviousData,
   });
+
+  useEffect(() => {
+    setProducts([]);
+  }, [category]);
 
   useEffect(() => {
     if (data === undefined) {
@@ -36,7 +42,7 @@ export function MainPage() {
   }, [data]);
 
   const nextPageClick = () => {
-    setSearchParams({ page: `${page + 1}` });
+    setSearchParams({ category, page: `${page + 1}` });
   };
 
   const handlePageChange = (_: ChangeEvent<unknown>, chosenPage: number) => {
@@ -50,7 +56,7 @@ export function MainPage() {
     }
 
     setProducts([]);
-    setSearchParams({ page: `${chosenPage}` });
+    setSearchParams({ category, page: `${chosenPage}` });
   };
 
   return (

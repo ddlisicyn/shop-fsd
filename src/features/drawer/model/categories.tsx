@@ -15,6 +15,6 @@ export const categories: category[] = [
   { name: 'all', value: 'Весь каталог', icon: <ImportContactsIcon /> },
   { name: 'home', value: 'Дом', icon: <HouseIcon /> },
   { name: 'beauty', value: 'Красота', icon: <AutoFixHighIcon /> },
-  { name: 'health', value: 'Здоровье', icon: <FavoriteBorderIcon /> },
-  { name: 'body-care', value: 'Уход за телом', icon: <CleanHandsIcon /> },
+  { name: 'nutrition', value: 'Здоровье', icon: <FavoriteBorderIcon /> },
+  { name: 'personal-care', value: 'Уход за телом', icon: <CleanHandsIcon /> },
 ];

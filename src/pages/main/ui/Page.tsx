@@ -1,6 +1,10 @@
 import { useEffect, useState, ChangeEvent } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { ProductsList } from '../../../widgets/ProductsList';
 import { getProducts } from '../api/getProducts';
 import { Product } from '../../../entities/product/model/product';
@@ -9,7 +13,6 @@ import './index.css';
 import { Spinner } from '../../../widgets/ProductsList/ui/Spinner';
 
 export function MainPage() {
-  const queryClient = useQueryClient();
   const [products, setProducts] = useState<Product[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const pageFromParams = searchParams.get('page');
@@ -32,9 +35,6 @@ export function MainPage() {
     }
 
     const { docs } = data;
-
-    console.log(products);
-    console.log(docs);
 
     if (typeof docs === 'object' && Array.isArray(docs) && docs.length !== 0) {
       setProducts((products) => products.concat(docs));

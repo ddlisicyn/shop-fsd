@@ -1,9 +1,9 @@
-import { MainPage } from '../pages/main';
+import { Outlet } from 'react-router-dom';
 import { Header } from '../widgets/Header';
 
 export const baseLayout = (
   <div>
     <Header />
-    <MainPage />
+    <Outlet />
   </div>
 );

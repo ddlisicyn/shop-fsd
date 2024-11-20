@@ -13,12 +13,17 @@ export function MainPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const pageFromParams = searchParams.get('page');
   const page = pageFromParams !== null ? parseInt(pageFromParams) : 1;
+  const category = searchParams.get('category') || 'all';
 
   const { isLoading, data, isFetched, isError, error } = useQuery({
-    queryKey: ['products', page],
-    queryFn: () => getProducts(page),
+    queryKey: ['products', page, category],
+    queryFn: () => getProducts(page, category),
     placeholderData: keepPreviousData,
   });
+
+  useEffect(() => {
+    setProducts([]);
+  }, [category]);
 
   useEffect(() => {
     if (data === undefined) {
@@ -27,16 +32,13 @@ export function MainPage() {
 
     const { docs } = data;
 
-    console.log(products);
-    console.log(docs);
-
     if (typeof docs === 'object' && Array.isArray(docs) && docs.length !== 0) {
       setProducts((products) => products.concat(docs));
     }
   }, [data]);
 
   const nextPageClick = () => {
-    setSearchParams({ page: `${page + 1}` });
+    setSearchParams({ category, page: `${page + 1}` });
   };
 
   const handlePageChange = (_: ChangeEvent<unknown>, chosenPage: number) => {
@@ -50,7 +52,7 @@ export function MainPage() {
     }
 
     setProducts([]);
-    setSearchParams({ page: `${chosenPage}` });
+    setSearchParams({ category, page: `${chosenPage}` });
   };
 
   return (

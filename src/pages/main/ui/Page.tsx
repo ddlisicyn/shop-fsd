@@ -1,10 +1,6 @@
 import { useEffect, useState, ChangeEvent } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import {
-  keepPreviousData,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { ProductsList } from '../../../widgets/ProductsList';
 import { getProducts } from '../api/getProducts';
 import { Product } from '../../../entities/product/model/product';

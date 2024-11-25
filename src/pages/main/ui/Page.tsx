@@ -1,4 +1,4 @@
-import { useEffect, useState, ChangeEvent } from 'react';
+import { useEffect, useState, ChangeEvent, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { ProductsList } from '../../../widgets/ProductsList';
@@ -7,6 +7,7 @@ import { Product } from '../../../entities/product/model/product';
 import { Button, Pagination } from '@mui/material';
 import './index.css';
 import { Spinner } from '../../../widgets/ProductsList/ui/Spinner';
+const devicePixelRatio = window.devicePixelRatio;
 
 export function MainPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -14,6 +15,8 @@ export function MainPage() {
   const pageFromParams = searchParams.get('page');
   const page = pageFromParams !== null ? parseInt(pageFromParams) : 1;
   const category = searchParams.get('category') || 'all';
+
+  console.log(devicePixelRatio);
 
   const { isLoading, data, isFetched, isError, error } = useQuery({
     queryKey: ['products', page, category],
@@ -57,7 +60,11 @@ export function MainPage() {
 
   return (
     <main className='main'>
-      <ProductsList isLoading={isLoading} products={products} />
+      <ProductsList
+        isLoading={isLoading}
+        products={products}
+        devicePixelRatio={devicePixelRatio}
+      />
       {page !== data?.totalPages ? (
         <Button
           sx={{ width: '90%', marginTop: '10px' }}

@@ -6,15 +6,23 @@ import { Product } from '../../../entities/product/model/product';
 export function ProductsList({
   isLoading,
   products,
+  devicePixelRatio,
 }: {
   isLoading: boolean;
   products: Product[];
+  devicePixelRatio: number;
 }) {
   return (
     <Box sx={{ flexGrow: 1, p: 0 }}>
       <Grid container spacing={0.2}>
         {(isLoading ? Array.from(new Array(20)) : products)?.map(
-          (product, index) => <ProductCard key={index} product={product} />,
+          (product, index) => (
+            <ProductCard
+              key={index}
+              product={product}
+              devicePixelRatio={devicePixelRatio}
+            />
+          ),
         )}
       </Grid>
     </Box>

@@ -2,14 +2,9 @@ import Grid from '@mui/material/Grid2';
 import {
   CardMedia,
   Container,
-  Box,
   Typography,
   CardActions,
   Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Link,
 } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
@@ -20,11 +15,54 @@ import {
   CardContentStyleChanged,
   NameTypography,
 } from './styledComponents';
+import { MouseEvent, useState, useMemo, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+// @ts-ignore
+import fallbackImg from '../../../shared/ui/img/fallbackImg.png';
+import { breakPoints } from '../../../shared/ui/breakpoints';
+import { EXCHANGE_RATE, EXPENSES } from '../../../shared/config';
+const { xs, sm, md, lg } = breakPoints;
 
-export function ProductCard({ product }: { product: Product }) {
-  const handleClickDetail = () => {};
+export function ProductCard({
+  product,
+  devicePixelRatio,
+}: {
+  product: Product;
+  devicePixelRatio: number;
+}) {
+  const navigate = useNavigate();
+  const variants = product?.variants;
+  const images = variants?.length
+    ? variants?.[0].lynxPicture?.renditions
+    : product?.images;
+  const [xsImg, lgImg, mdImg, smImg] =
+    images?.map((image) => `${BASE_IMG_URL}\\${image.url}`) ||
+    new Array(4).fill('');
+  const [image, setImage] = useState(lgImg);
+  const srcSet = useMemo(
+    () =>
+      `${xsImg} ${xs * devicePixelRatio}w, ${smImg} ${sm * devicePixelRatio}w, ${mdImg} ${md * devicePixelRatio}w, ${lgImg} ${lg * devicePixelRatio}w`,
+    [],
+  );
+  const getCorrectedPrice = useCallback(
+    (price: number): string =>
+      Math.ceil((price * EXPENSES) / EXCHANGE_RATE).toLocaleString('ru-RU', {
+        style: 'currency',
+        currency: 'RUB',
+      }),
+    [],
+  );
+
+  const handleClickDetail = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    navigate(`/detail/${product.code}`);
+  };
 
   const handleClickAddProduct = () => {};
+
+  const handleImageError = () => {
+    setImage(fallbackImg);
+  };
 
   return (
     <Grid
@@ -53,7 +91,9 @@ export function ProductCard({ product }: { product: Product }) {
                   width='100%'
                   height='100%'
                   loading='lazy'
-                  image={`${BASE_IMG_URL}/${product.images?.[2]?.url}`}
+                  image={image}
+                  onError={handleImageError}
+                  srcSet={srcSet}
                   alt={product.name}
                   sx={{ cursor: 'pointer' }}
                 />
@@ -79,48 +119,27 @@ export function ProductCard({ product }: { product: Product }) {
                   )}
                 </NameTypography>
               </Link>
-              <Typography variant='subtitle1' mt={'5px'} fontWeight={'bold'}>
-                {product ? (
-                  `${product.price.toLocaleString('ru-RU')},00 ₽`
-                ) : (
-                  <Skeleton />
-                )}
+              <Typography variant='subtitle1' mt={'5px'} fontWeight='bold'>
+                {product ? getCorrectedPrice(product.price) : <Skeleton />}
               </Typography>
               <Typography
                 variant='caption'
                 sx={{ textDecoration: 'line-through', color: '#e06666' }}
               >
                 {product ? (
-                  `${product.retailPrice.toLocaleString('ru-RU')},00 ₽`
+                  getCorrectedPrice(product.retailPrice)
                 ) : (
                   <Skeleton />
                 )}
               </Typography>
             </Container>
-            {
-              // colors && Object.keys(colors).length ?
-              // <Box sx={{ display: 'flex', justifyContent: 'center', minWidth: 120, marginTop: '5px' }}>
-              //     <FormControl>
-              //         <InputLabel>Цвет</InputLabel>
-              //         <Select
-              //             className="thumbnail-card__color-select"
-              //             value={colorId}
-              //             label="Цвет"
-              //             onChange={handleChange}
-              //         >
-              //             {
-              //                 colors.map((color) => (
-              //                     <MenuItem key={color.id} value={color.id}>
-              //                         <Box sx={{ width: '20px', height: '20px', backgroundColor: `${color.colorHex}` }} />
-              //                         <Typography sx={{ marginLeft: '5px' }}>{color.colorName}</Typography>
-              //                     </MenuItem>
-              //                 ))
-              //             }
-              //         </Select>
-              //     </FormControl>
-              // </Box> :
-              // <Box sx={{ height: '45px' }}/>
-            }
+            <Container sx={{ height: '20px' }}>
+              {variants?.length && variants.length - 1 > 0 ? (
+                <Typography variant='caption' fontWeight='bold'>
+                  Ещё {variants.length - 1} Цвета(-ов)
+                </Typography>
+              ) : null}
+            </Container>
           </CardContentStyleChanged>
           <CardActions>
             <Button

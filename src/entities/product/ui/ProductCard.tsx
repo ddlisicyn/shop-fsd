@@ -141,14 +141,14 @@ export function ProductCard({
               ) : null}
             </Container>
           </CardContentStyleChanged>
-          <CardActions>
+          <CardActions sx={{ flex: 'display', justifyContent: 'center' ,width: '100%' }}>
             <Button
               size='medium'
               variant='contained'
-              sx={{ marginBottom: '10px' }}
+              sx={{ width: '80%',marginBottom: '10px' }}
               onClick={handleClickAddProduct}
             >
-              Добавить в корзину
+              Добавить
             </Button>
           </CardActions>
         </CardStyleChanged>

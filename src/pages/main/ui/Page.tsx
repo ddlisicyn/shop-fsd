@@ -7,7 +7,6 @@ import { Product } from '../../../entities/product/model/product';
 import { Button, Pagination } from '@mui/material';
 import './index.css';
 import { Spinner } from '../../../widgets/ProductsList/ui/Spinner';
-const devicePixelRatio = window.devicePixelRatio;
 
 export function MainPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -15,9 +14,7 @@ export function MainPage() {
   const pageFromParams = searchParams.get('page');
   const page = pageFromParams !== null ? parseInt(pageFromParams) : 1;
   const category = searchParams.get('category') || 'all';
-
-  console.log(devicePixelRatio);
-
+  const devicePixelRatio = useMemo((() => window.devicePixelRatio), []);
   const { isLoading, data, isFetched, isError, error } = useQuery({
     queryKey: ['products', page, category],
     queryFn: () => getProducts(page, category),

@@ -42,7 +42,7 @@ export function ProductCard({
   const srcSet = useMemo(
     () =>
       `${xsImg} ${xs * devicePixelRatio}w, ${smImg} ${sm * devicePixelRatio}w, ${mdImg} ${md * devicePixelRatio}w, ${lgImg} ${lg * devicePixelRatio}w`,
-    [],
+    [product],
   );
   const getCorrectedPrice = useCallback(
     (price: number): string =>

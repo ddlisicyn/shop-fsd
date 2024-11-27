@@ -17,8 +17,7 @@ export function MainPage() {
   const devicePixelRatio = useMemo((() => window.devicePixelRatio), []);
   const { isLoading, data, isFetched, isError, error } = useQuery({
     queryKey: ['products', page, category],
-    queryFn: () => getProducts(page, category),
-    placeholderData: keepPreviousData,
+    queryFn: () => getProducts(page, category)
   });
 
   useEffect(() => {

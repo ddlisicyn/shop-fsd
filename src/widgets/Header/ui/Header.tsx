@@ -15,7 +15,7 @@ export function Header() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position='static'>
+      <AppBar position='fixed'>
         <Toolbar>
           <IconButton
             size='large'
@@ -34,6 +34,7 @@ export function Header() {
           </Box>
         </Toolbar>
       </AppBar>
+      <Toolbar />
       <DrawerModule open={open} handleDrawerClose={handleDrawerClose} />
     </Box>
   );

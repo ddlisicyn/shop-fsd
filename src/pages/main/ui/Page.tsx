@@ -5,19 +5,19 @@ import { ProductsList } from '../../../widgets/ProductsList';
 import { getProducts } from '../api/getProducts';
 import { Product } from '../../../entities/product/model/product';
 import { Button, Pagination } from '@mui/material';
-import './index.css';
 import { Spinner } from '../../../widgets/ProductsList/ui/Spinner';
+import './index.css';
 
 export function MainPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  const pageFromParams = searchParams.get('page');
-  const page = pageFromParams !== null ? parseInt(pageFromParams) : 1;
+  const page = parseInt(searchParams.get('page') || '') || 1;
   const category = searchParams.get('category') || 'all';
   const devicePixelRatio = useMemo((() => window.devicePixelRatio), []);
-  const { isLoading, data, isFetched, isError, error } = useQuery({
+  const { isLoading, data, isFetched, isError, error, isPlaceholderData } = useQuery({
     queryKey: ['products', page, category],
-    queryFn: () => getProducts(page, category)
+    queryFn: () => getProducts(page, category),
+    placeholderData: keepPreviousData
   });
 
   useEffect(() => {
@@ -58,6 +58,7 @@ export function MainPage() {
     <main className='main'>
       <ProductsList
         isLoading={isLoading}
+        isPlaceholderData={isPlaceholderData}
         products={products}
         devicePixelRatio={devicePixelRatio}
       />

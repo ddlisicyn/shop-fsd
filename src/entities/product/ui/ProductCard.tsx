@@ -13,7 +13,7 @@ import { BASE_IMG_URL } from '../../../shared/config';
 import {
   CardStyleChanged,
   CardContentStyleChanged,
-  NameTypography,
+  NameTypography
 } from './styledComponents';
 import { MouseEvent, useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -84,7 +84,7 @@ export function ProductCard({
           }}
         >
           <CardContentStyleChanged sx={{ width: '100%' }}>
-            <Link href={`/detail/${product?.code}`} onClick={handleClickDetail}>
+            <Link sx={{ width: '100%', height: '100%' }} href={`/detail/${product?.code}`} onClick={handleClickDetail}>
               {product ? (
                 <CardMedia
                   component='img'
@@ -98,7 +98,12 @@ export function ProductCard({
                   sx={{ cursor: 'pointer' }}
                 />
               ) : (
-                <Skeleton variant='rectangular' width={212} height={212} />
+                <Skeleton>
+                  <CardMedia
+                    component='img'
+                    src={fallbackImg}
+                  />
+                </Skeleton>
               )}
             </Link>
             <Container sx={{ textAlign: 'center' }}>
@@ -134,14 +139,15 @@ export function ProductCard({
               </Typography>
             </Container>
             <Container sx={{ height: '20px' }}>
-              {variants?.length && variants.length - 1 > 0 ? (
+              {!product ? <Skeleton /> :
+              variants?.length && variants.length - 1 > 0 ? (
                 <Typography variant='caption' fontWeight='bold'>
                   Ещё {variants.length - 1} Цвета(-ов)
                 </Typography>
               ) : null}
             </Container>
           </CardContentStyleChanged>
-          <CardActions sx={{ flex: 'display', justifyContent: 'center' ,width: '100%' }}>
+          <CardActions sx={{ flex: 'display', justifyContent: 'center', width: '100%' }}>
             <Button
               size='medium'
               variant='contained'

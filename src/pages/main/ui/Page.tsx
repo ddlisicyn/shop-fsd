@@ -13,12 +13,13 @@ export function MainPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get('page') || '') || 1;
   const category = searchParams.get('category') || 'all';
-  const devicePixelRatio = useMemo((() => window.devicePixelRatio), []);
-  const { isLoading, data, isFetched, isError, error, isPlaceholderData } = useQuery({
-    queryKey: ['products', page, category],
-    queryFn: () => getProducts(page, category),
-    placeholderData: keepPreviousData
-  });
+  const devicePixelRatio = useMemo(() => window.devicePixelRatio, []);
+  const { isLoading, data, isFetched, isError, error, isPlaceholderData } =
+    useQuery({
+      queryKey: ['products', page, category],
+      queryFn: () => getProducts(page, category),
+      placeholderData: keepPreviousData,
+    });
 
   useEffect(() => {
     setProducts([]);

@@ -13,9 +13,9 @@ import './index.css';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 3 * 60 * 1000
-    }
-  }
+      staleTime: 3 * 60 * 1000,
+    },
+  },
 });
 
 createRoot(document.getElementById('root')!).render(

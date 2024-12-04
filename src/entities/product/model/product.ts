@@ -5,18 +5,6 @@ type Image = {
   width: number;
 };
 
-type Renditions = {
-  url: string;
-  renditionType: string;
-  assetFormat: {
-    width: number;
-  };
-};
-
-type LynxPicture = {
-  renditions: Renditions[];
-};
-
 export type Product = {
   amwaySize?: string;
   code: string;
@@ -24,9 +12,10 @@ export type Product = {
   name: string;
   price: number;
   retailPrice: number;
+  category: string;
   images: Image[];
-  lynxPicture?: LynxPicture;
   lynxColorCode?: string;
   lynxName?: string;
   variants?: Product[];
+  visible: boolean;
 };

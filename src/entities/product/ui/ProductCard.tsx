@@ -6,14 +6,14 @@ import {
   CardActions,
   Button,
   Link,
+  Skeleton
 } from '@mui/material';
-import Skeleton from '@mui/material/Skeleton';
 import { Product } from '../model/product';
 import { BASE_IMG_URL } from '../../../shared/config';
 import {
   CardStyleChanged,
   CardContentStyleChanged,
-  NameTypography
+  NameTypography,
 } from './styledComponents';
 import { MouseEvent, useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -32,11 +32,8 @@ export function ProductCard({
 }) {
   const navigate = useNavigate();
   const variants = product?.variants;
-  const images = variants?.length
-    ? variants?.[0].lynxPicture?.renditions
-    : product?.images;
   const [xsImg, lgImg, mdImg, smImg] =
-    images?.map((image) => `${BASE_IMG_URL}\\${image.url}`) ||
+    product?.images?.map((image) => `${BASE_IMG_URL}\\${image.url}`) ||
     new Array(4).fill('');
   const [image, setImage] = useState(lgImg);
   const srcSet = useMemo(
@@ -55,7 +52,8 @@ export function ProductCard({
 
   const handleClickDetail = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
-    navigate(`/detail/${product.code}`);
+    const code = variants?.length ? variants[0].code : product.code;
+    navigate(`/detail/${code}`);
   };
 
   const handleClickAddProduct = () => {};
@@ -63,6 +61,10 @@ export function ProductCard({
   const handleImageError = () => {
     setImage(fallbackImg);
   };
+
+  if (product && !product.visible) {
+    return null;
+  }
 
   return (
     <Grid
@@ -84,7 +86,11 @@ export function ProductCard({
           }}
         >
           <CardContentStyleChanged sx={{ width: '100%' }}>
-            <Link sx={{ width: '100%', height: '100%' }} href={`/detail/${product?.code}`} onClick={handleClickDetail}>
+            <Link
+              sx={{ width: '100%', height: '100%' }}
+              href={`/detail/${product?.code}`}
+              onClick={handleClickDetail}
+            >
               {product ? (
                 <CardMedia
                   component='img'
@@ -99,10 +105,7 @@ export function ProductCard({
                 />
               ) : (
                 <Skeleton>
-                  <CardMedia
-                    component='img'
-                    src={fallbackImg}
-                  />
+                  <CardMedia component='img' src={fallbackImg} />
                 </Skeleton>
               )}
             </Link>
@@ -139,19 +142,22 @@ export function ProductCard({
               </Typography>
             </Container>
             <Container sx={{ height: '20px' }}>
-              {!product ? <Skeleton /> :
-              variants?.length && variants.length - 1 > 0 ? (
+              {!product ? (
+                <Skeleton />
+              ) : variants?.length && variants.length - 1 > 0 ? (
                 <Typography variant='caption' fontWeight='bold'>
                   Ещё {variants.length - 1} Цвета(-ов)
                 </Typography>
               ) : null}
             </Container>
           </CardContentStyleChanged>
-          <CardActions sx={{ flex: 'display', justifyContent: 'center', width: '100%' }}>
+          <CardActions
+            sx={{ flex: 'display', justifyContent: 'center', width: '100%' }}
+          >
             <Button
               size='medium'
               variant='contained'
-              sx={{ width: '80%',marginBottom: '10px' }}
+              sx={{ width: '80%', marginBottom: '10px' }}
               onClick={handleClickAddProduct}
             >
               Добавить

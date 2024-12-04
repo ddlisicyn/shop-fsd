@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { categories } from '../model/categories';
 import { styled, useTheme } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
@@ -17,8 +17,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
   justifyContent: 'space-between',
 }));
 
@@ -32,6 +30,16 @@ type DrawerModuleProps = {
 export function DrawerModule({ open, handleDrawerClose }: DrawerModuleProps) {
   const theme = useTheme();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParamCategory = searchParams.get('category') || 'all';
+  const handleClickOnCategory = (categoryName: string) => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+    navigate(`/?category=${categoryName}`);
+    handleDrawerClose();
+  };
 
   return (
     <Drawer
@@ -40,6 +48,7 @@ export function DrawerModule({ open, handleDrawerClose }: DrawerModuleProps) {
         flexShrink: 0,
         '& .MuiDrawer-paper': {
           width: drawerWidth,
+          maxWidth: '450px',
           boxSizing: 'border-box',
         },
       }}
@@ -64,14 +73,8 @@ export function DrawerModule({ open, handleDrawerClose }: DrawerModuleProps) {
         {categories.map((category) => (
           <ListItem disablePadding key={category.name + category.value}>
             <ListItemButton
-              onClick={() => {
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth',
-                });
-                navigate(`/?category=${category.name}`);
-                handleDrawerClose();
-              }}
+              onClick={() => handleClickOnCategory(category.name)}
+              disabled={category.name === searchParamCategory}
             >
               <ListItemIcon>{category.icon}</ListItemIcon>
               <ListItemText>{category.value}</ListItemText>

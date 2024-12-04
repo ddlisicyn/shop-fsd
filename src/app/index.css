@@ -2,4 +2,17 @@ body {
   margin: 0;
   padding: 0;
   background: #8080801f;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#root {
+  width: 100%;
+}
+
+.app-layout {
+  max-width: 1200px;
+  width: 100%;
 }

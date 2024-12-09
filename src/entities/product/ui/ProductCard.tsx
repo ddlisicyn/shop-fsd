@@ -21,6 +21,7 @@ import { useNavigate } from 'react-router-dom';
 import fallbackImg from '../../../shared/ui/img/fallbackImg.png';
 import { breakPoints } from '../../../shared/ui/breakpoints';
 import { EXCHANGE_RATE, EXPENSES } from '../../../shared/config';
+import { useCartDispatch } from '../../../shared/model/context/context';
 const { xs, sm, md, lg } = breakPoints;
 
 export function ProductCard({
@@ -31,6 +32,7 @@ export function ProductCard({
   devicePixelRatio: number;
 }) {
   const navigate = useNavigate();
+  const { handleIncrease } = useCartDispatch();
   const variants = product?.variants;
   const [xsImg, lgImg, mdImg, smImg] =
     product?.images?.map((image) => `${BASE_IMG_URL}\\${image.url}`) ||
@@ -55,8 +57,6 @@ export function ProductCard({
     const code = variants?.length ? variants[0].code : product.code;
     navigate(`/detail/${code}`);
   };
-
-  const handleClickAddProduct = () => {};
 
   const handleImageError = () => {
     setImage(fallbackImg);
@@ -127,6 +127,7 @@ export function ProductCard({
                   )}
                 </NameTypography>
               </Link>
+              {/* TODO: разнести здесь и в detail в отдельный компонент в shared */}
               <Typography variant='subtitle1' mt={'5px'} fontWeight='bold'>
                 {product ? getCorrectedPrice(product.price) : <Skeleton />}
               </Typography>
@@ -154,11 +155,12 @@ export function ProductCard({
           <CardActions
             sx={{ flex: 'display', justifyContent: 'center', width: '100%' }}
           >
+            {/* TODO: разнести здесь и в detail в отдельный компонент в shared */}
             <Button
               size='medium'
               variant='contained'
               sx={{ width: '80%', marginBottom: '10px' }}
-              onClick={handleClickAddProduct}
+              onClick={() => handleIncrease(product.code)}
             >
               Добавить
             </Button>

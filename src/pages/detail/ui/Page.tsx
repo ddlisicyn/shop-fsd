@@ -13,16 +13,18 @@ import {
   Skeleton,
   SelectChangeEvent
 } from '@mui/material';
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback, useContext } from 'react';
 import { BASE_IMG_URL } from '../../../shared/config';
 import { breakPoints } from '../../../shared/ui/breakpoints';
 //@ts-ignore
 import fallbackImg from '../../../shared/ui/img/fallbackImg.png';
 import { EXCHANGE_RATE, EXPENSES } from '../../../shared/config';
 import './index.css';
+import { useCartDispatch } from '../../../shared/model/context/context';
 
 const { xs, sm, md, lg } = breakPoints;
 export function DetailPage() {
+  const { handleIncrease } = useCartDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
   const { data } = useQuery({
@@ -55,8 +57,6 @@ export function DetailPage() {
   const handleImageError = () => {
     setImage(fallbackImg);
   };
-
-  const handleClickAddProduct = () => {};
 
   // const handleOpen = () => setAlert(true);
 
@@ -135,7 +135,7 @@ export function DetailPage() {
           size='medium'
           variant='contained'
           sx={{ marginTop: '35px' }}
-          onClick={handleClickAddProduct}
+          onClick={() => handleIncrease(id)}
         >
           Добавить в корзину
         </Button>

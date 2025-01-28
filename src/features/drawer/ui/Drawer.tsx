@@ -74,7 +74,10 @@ export function DrawerModule({ open, handleDrawerClose }: DrawerModuleProps) {
           <ListItem disablePadding key={category.name + category.value}>
             <ListItemButton
               onClick={() => handleClickOnCategory(category.name)}
-              disabled={category.name === searchParamCategory && !document.location.pathname.includes('detail')}
+              disabled={
+                category.name === searchParamCategory &&
+                !document.location.pathname.includes('detail')
+              }
             >
               <ListItemIcon>{category.icon}</ListItemIcon>
               <ListItemText>{category.value}</ListItemText>

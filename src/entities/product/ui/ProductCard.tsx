@@ -6,7 +6,7 @@ import {
   CardActions,
   Button,
   Link,
-  Skeleton
+  Skeleton,
 } from '@mui/material';
 import { Product } from '../model/product';
 import { BASE_IMG_URL } from '../../../shared/config';

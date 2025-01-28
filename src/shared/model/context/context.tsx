@@ -90,7 +90,7 @@ function CartContextProvider({ children }: { children: ReactNode }) {
       code,
     });
   };
-  const handleRemove = (code: string) => {
+  const handleDelete = (code: string) => {
     dispatch({
       type: ActionTypes.REMOVE,
       code,
@@ -105,7 +105,7 @@ function CartContextProvider({ children }: { children: ReactNode }) {
   return (
     <CartContext.Provider value={cartProducts}>
       <CartDispatchContext.Provider
-        value={{ handleIncrease, handleDecrease, handleRemove, handleClear }}
+        value={{ handleIncrease, handleDecrease, handleDelete, handleClear }}
       >
         {children}
       </CartDispatchContext.Provider>

@@ -1,7 +1,8 @@
-import { Container, Box, Typography, Stack } from '@mui/material';
+import { Container, Box, Typography, Stack, Button } from '@mui/material';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { getProductsByIds } from '../api/getProductsByIds';
 import { useCart } from '../../../shared/model/context/context';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { ProductCard } from './ProductCard';
 import { useMemo, useCallback } from 'react';
 import { EXPENSES, EXCHANGE_RATE } from '../../../shared/config';
@@ -12,6 +13,7 @@ export function CartPage() {
   const { isLoading, data, error } = useQuery({
     queryKey: ['cart', ...ids],
     queryFn: () => getProductsByIds(ids),
+    placeholderData: keepPreviousData,
   });
   const totalPrice = useMemo(
     () =>
@@ -33,34 +35,51 @@ export function CartPage() {
     [totalPrice],
   );
 
+  console.log(data);
+
   return (
     <Container
       disableGutters
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
+        alignItems: 'start',
         padding: '10px',
       }}
     >
-      <Stack spacing={1}>
-        {data
-          ? data.map((product) => <ProductCard product={product} />)
-          : 'Корзина пуста'}
-      </Stack>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          width: '100%',
-          marginTop: '10px',
-        }}
+      <Button
+        variant='text'
+        startIcon={<ArrowBackIosIcon />}
+        onClick={() => history.back()}
       >
-        <Typography variant='h6'>Итого:</Typography>
-        <Typography variant='h6'>{getCorrectedPrice(totalPrice)}</Typography>
-      </Box>
-      {/* <OrderForm /> */}
+        Вернуться назад
+      </Button>
+      {data?.length ? (
+        <>
+          <Stack spacing={1} width='100%' mt='15px'>
+            {data.map((product) => (
+              <ProductCard key={product.code} product={product} />
+            ))}
+          </Stack>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: '100%',
+              marginTop: '10px',
+            }}
+          >
+            <Typography variant='h6'>Итого:</Typography>
+            <Typography variant='h6'>
+              {getCorrectedPrice(totalPrice)}
+            </Typography>
+            {/* <OrderForm /> */}
+          </Box>
+        </>
+      ) : (
+        <Typography variant='h5'>Корзина пока пустая</Typography>
+      )}
     </Container>
   );
 }

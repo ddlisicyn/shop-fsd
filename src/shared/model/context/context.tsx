@@ -7,7 +7,7 @@ type CartProducts = {
 export enum ActionTypes {
   INCREASE = 'INCREASE',
   DECREASE = 'DECREASE',
-  REMOVE = 'REMOVE',
+  DELETE = 'DELETE',
   CLEAR = 'CLEAR',
 }
 
@@ -49,9 +49,12 @@ const cartReducer = (cartProducts: any, action: Action) => {
       );
       return newCartProducts;
     }
-    case ActionTypes.REMOVE: {
-      const newCartProducts = cartProducts;
-      delete newCartProducts[code];
+    case ActionTypes.DELETE: {
+      const newCartProducts = Object.fromEntries(
+        Object.entries(cartProducts).filter(
+          ([codeFromCart, _]) => codeFromCart !== code,
+        ),
+      );
       localStorage.setItem(
         LOCALSTORAGE_CART_KEY,
         JSON.stringify(newCartProducts),
@@ -92,7 +95,7 @@ function CartContextProvider({ children }: { children: ReactNode }) {
   };
   const handleDelete = (code: string) => {
     dispatch({
-      type: ActionTypes.REMOVE,
+      type: ActionTypes.DELETE,
       code,
     });
   };

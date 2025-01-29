@@ -76,7 +76,7 @@ export const ProductCard = ({ product }: { product: Product }) => {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              width: '96px',
+              width: '100px',
               height: '24px',
             }}
           >

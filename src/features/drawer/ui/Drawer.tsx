@@ -30,7 +30,7 @@ type DrawerModuleProps = {
 export function DrawerModule({ open, handleDrawerClose }: DrawerModuleProps) {
   const theme = useTheme();
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, _] = useSearchParams();
   const searchParamCategory = searchParams.get('category') || 'all';
   const handleClickOnCategory = (categoryName: string) => {
     window.scrollTo({

@@ -11,26 +11,28 @@ import {
   Select,
   Typography,
   Skeleton,
-  SelectChangeEvent
+  SelectChangeEvent,
 } from '@mui/material';
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback, useContext } from 'react';
 import { BASE_IMG_URL } from '../../../shared/config';
 import { breakPoints } from '../../../shared/ui/breakpoints';
 //@ts-ignore
 import fallbackImg from '../../../shared/ui/img/fallbackImg.png';
 import { EXCHANGE_RATE, EXPENSES } from '../../../shared/config';
 import './index.css';
+import { useCartDispatch } from '../../../shared/model/context/context';
 
 const { xs, sm, md, lg } = breakPoints;
 export function DetailPage() {
+  const { handleIncrease } = useCartDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
   const { data } = useQuery({
     queryKey: ['product', id],
     queryFn: () => getProductById(id),
-    placeholderData: keepPreviousData
+    placeholderData: keepPreviousData,
   });
-  const [xsImg, lgImg, mdImg, smImg] = 
+  const [xsImg, lgImg, mdImg, smImg] =
     data?.images?.map((image) => `${BASE_IMG_URL}\\${image.url}`) ||
     new Array(4).fill('');
   const [image, setImage] = useState(fallbackImg);
@@ -56,14 +58,14 @@ export function DetailPage() {
     setImage(fallbackImg);
   };
 
-  const handleClickAddProduct = () => {};
-
   // const handleOpen = () => setAlert(true);
 
   // const handleClose = () => setAlert(false);
 
   const handleChange = (event: SelectChangeEvent) => {
-    const code = data?.variants?.filter(variant => variant.lynxColorCode === event.target.value)[0].code;
+    const code = data?.variants?.filter(
+      (variant) => variant.lynxColorCode === event.target.value,
+    )[0].code;
     navigate(`/detail/${code}`);
   };
 
@@ -97,45 +99,55 @@ export function DetailPage() {
         >
           {data?.name}
         </Typography>
-        <Typography variant="button" mt="25px" >
-					{data ? getCorrectedPrice(data.price) : <Skeleton />}
-				</Typography>
-				<Typography variant="overline" sx={{ textDecoration: "line-through", color: "#e06666", }}>
-					{data ? getCorrectedPrice(data.retailPrice) : <Skeleton />}
-				</Typography>
-				<Typography >
-					Вес/объем: {data?.amwaySize || ''}
-				</Typography>
-				{
-					data && data.variants && data.variants.length ? 
-					<Box sx={{ minWidth: 120, marginTop: '30px' }}>
-						<FormControl>
-							<InputLabel>Цвет</InputLabel>
-							<Select
-                className="product-card__color-select"
-                value={data.variants.filter(variant => variant.code === id)[0].lynxColorCode}
-                label="Цвет"
+        <Typography variant='button' mt='25px'>
+          {data ? getCorrectedPrice(data.price) : <Skeleton />}
+        </Typography>
+        <Typography
+          variant='overline'
+          sx={{ textDecoration: 'line-through', color: '#e06666' }}
+        >
+          {data ? getCorrectedPrice(data.retailPrice) : <Skeleton />}
+        </Typography>
+        <Typography>Вес/объем: {data?.amwaySize || ''}</Typography>
+        {data && data.variants && data.variants.length ? (
+          <Box sx={{ minWidth: 120, marginTop: '30px' }}>
+            <FormControl>
+              <InputLabel>Цвет</InputLabel>
+              <Select
+                className='product-card__color-select'
+                value={
+                  data.variants.filter((variant) => variant.code === id)[0]
+                    .lynxColorCode
+                }
+                label='Цвет'
                 onChange={handleChange}
                 autoWidth
-							>
-								{
-									data.variants.map((variant) => (
-										<MenuItem key={variant.code} value={variant.lynxColorCode} >
-											<Box sx={{ width: '20px', height: '20px', backgroundColor: `${variant.lynxColorCode}` }}/>
-											<Typography sx={{ marginLeft: '5px' }}>{variant.lynxName}</Typography>
-										</MenuItem>
-									))
-								}
-							</Select>
-						</FormControl>
-					</Box> :
-					<></>
-				}
+              >
+                {data.variants.map((variant) => (
+                  <MenuItem key={variant.code} value={variant.lynxColorCode}>
+                    <Box
+                      sx={{
+                        width: '20px',
+                        height: '20px',
+                        backgroundColor: `${variant.lynxColorCode}`,
+                      }}
+                    />
+                    <Typography sx={{ marginLeft: '5px' }}>
+                      {variant.lynxName}
+                    </Typography>
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+        ) : (
+          <></>
+        )}
         <Button
           size='medium'
           variant='contained'
           sx={{ marginTop: '35px' }}
-          onClick={handleClickAddProduct}
+          onClick={() => handleIncrease(id)}
         >
           Добавить в корзину
         </Button>

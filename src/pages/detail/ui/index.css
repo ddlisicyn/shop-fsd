@@ -1,22 +1,22 @@
-.product-card__color-select [aria-haspopup="listbox"] {
-    display: flex !important;
-    flex-direction: row;
-    justify-content: center;
-}
-  
-.thumbnail-card__color-select [aria-haspopup="listbox"] {
-    display: flex !important;
-    flex-direction: row;
-    justify-content: start;
-    padding: 8px;
-    width: 140px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.product-card__color-select [aria-haspopup='listbox'] {
+  display: flex !important;
+  flex-direction: row;
+  justify-content: center;
 }
 
-.thumbnail-card__color-select [aria-haspopup="listbox"] p {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.thumbnail-card__color-select [aria-haspopup='listbox'] {
+  display: flex !important;
+  flex-direction: row;
+  justify-content: start;
+  padding: 8px;
+  width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.thumbnail-card__color-select [aria-haspopup='listbox'] p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

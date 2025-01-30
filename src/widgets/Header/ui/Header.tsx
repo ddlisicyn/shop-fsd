@@ -5,7 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { SearchModul } from '../../../features/search';
-import { AddToCartButton } from '../../../features/cart/addToCartButton';
+import { CartButton } from '../../../features/cart/CartButton';
 import { DrawerModule } from '../../../features/drawer';
 
 export function Header() {
@@ -15,7 +15,7 @@ export function Header() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position='sticky'>
+      <AppBar position='fixed'>
         <Toolbar>
           <IconButton
             size='large'
@@ -30,10 +30,11 @@ export function Header() {
           <SearchModul />
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'flex' } }}>
-            <AddToCartButton />
+            <CartButton />
           </Box>
         </Toolbar>
       </AppBar>
+      <Toolbar />
       <DrawerModule open={open} handleDrawerClose={handleDrawerClose} />
     </Box>
   );

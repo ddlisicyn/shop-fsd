@@ -74,6 +74,7 @@ export function MainPage() {
         </Button>
       ) : null}
       <Pagination
+        sx={{ marginTop: '10px' }}
         count={data?.totalPages}
         color='primary'
         disabled={!isFetched}

@@ -2,16 +2,15 @@ import { API_URL } from '../config';
 
 export const request = async <T = unknown>(
   endpoint: string,
-  method = 'GET',
+  method: 'GET' | 'POST',
   body: BodyInit | null,
-  headers = {} as Headers,
+  headers = <Record<string, string>>{},
 ): Promise<T> => {
   try {
     const url = new URL(endpoint, API_URL);
 
     if (body) {
-      body = JSON.stringify(body);
-      headers.set('Content-type', 'application/json');
+      headers['Content-Type'] = 'application/json';
     }
 
     const response = await fetch(url, { method, body, headers });

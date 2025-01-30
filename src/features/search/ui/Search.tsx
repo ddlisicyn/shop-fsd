@@ -1,6 +1,24 @@
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
+import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { getProductsByName } from '../api/getProductsByName';
+import { Divider, List, ListItem, ListItemText } from '@mui/material';
+import { Product } from '../../../entities/product/model/product';
+import { useQuery } from '@tanstack/react-query';
+
+const style = {
+  p: 0,
+  width: '100%',
+  maxWidth: 360,
+  borderRadius: 2,
+  border: '1px solid',
+  borderColor: 'divider',
+  backgroundColor: 'background.paper',
+  position: 'absolute',
+  marginTop: '10px',
+};
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -43,6 +61,22 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export function SearchModul() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [searchValue, setSearchValue] = useState('');
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
+
+    if (searchValue !== '' && searchValue.length >= 2) {
+      getProductsByName(searchValue);
+    }
+  };
+
+  const { data } = useQuery({
+    queryKey: ['products', searchValue],
+    queryFn: () => getProductsByName(searchValue),
+  });
+
   return (
     <Search>
       <SearchIconWrapper>
@@ -51,7 +85,19 @@ export function SearchModul() {
       <StyledInputBase
         placeholder='Поиска товара'
         inputProps={{ 'aria-label': 'search' }}
+        onChange={handleChange}
+        value={searchValue}
       />
+      <List sx={style} aria-label='mailbox folders'>
+        {data?.map((product) => (
+          <>
+            <ListItem>
+              <ListItemText primary={product.name} />
+            </ListItem>
+            <Divider component='li' />
+          </>
+        ))}
+      </List>
     </Search>
   );
 }
